@@ -77,7 +77,7 @@ gaps.outer.right      = 4
     alt-shift-up    = 'resize height -50'
     alt-shift-down  = 'resize height +50'
 
-    # Workspaces (SUPER+I/Q/W/E/R/T/Y, 8, 9, 0)
+    # Workspaces (SUPER+I/Q/W/E/R/T/Y, 8, 9, 0) — plus ⌥U for 8
     alt-i = 'workspace 1'
     alt-q = 'workspace 2'
     alt-w = 'workspace 3'
@@ -85,6 +85,7 @@ gaps.outer.right      = 4
     alt-r = 'workspace 5'
     alt-t = 'workspace 6'
     alt-y = 'workspace 7'
+    alt-u = 'workspace 8'   # next letter after Y, like I/Q/W/E/R/T/Y
     alt-8 = 'workspace 8'
     alt-9 = 'workspace 9'
     alt-0 = 'workspace 10'

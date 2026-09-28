@@ -70,7 +70,7 @@ Options: add them after `| bash -s --`, or pass them to `./install.sh` in a clon
 
 | Keys | Action |
 | --- | --- |
-| ⌥ I / Q / W / E / R / T / Y · ⌥ 8 / 9 / 0 | Go to workspace 1–7 · 8–10 |
+| ⌥ I / Q / W / E / R / T / Y / U · ⌥ 8 / 9 / 0 | Go to workspace 1–8 · 8–10 |
 | ⌥ ⇧ + the same key | Move the window there and follow it |
 | ⌥ H / J / K / L | Focus left / down / up / right |
 | ⌥ ⌃ ← ↓ ↑ → | Move the window |
