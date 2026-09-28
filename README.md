@@ -16,7 +16,7 @@ A Catppuccin Mocha setup for macOS: tiling windows with **AeroSpace**, a floatin
 | btop · `config/btop` | btop settings. |
 | fastfetch · `config/fastfetch` | Default fastfetch output, with the Apple logo vertically centred next to the info. |
 | neofetch · `config/neofetch` | neofetch settings. |
-| `zsh/mac-rice.zsh` | Two aliases, `aero-off` and `aero-on`, to quit and restart AeroSpace. Handy before exam or proctoring apps that don't get along with it. |
+| `zsh/mac-rice.zsh` | `aero-off` and `aero-on` quit and restart AeroSpace (handy before exam or proctoring apps that don't get along with it). `clock [size]` opens a big, centred tty-clock in its own Ghostty window. |
 
 The bar, from left to right:
 
@@ -39,7 +39,7 @@ The installer clones this repo to `~/.local/share/macOS-configuration`. It asks 
 
 | Step | Default |
 | --- | --- |
-| Install the missing apps and tools with Homebrew (AeroSpace, SketchyBar, Ghostty, JetBrainsMono Nerd Font, jq, macmon, blueutil, starship, tmux, btop, fastfetch, neofetch) | yes |
+| Install the missing apps and tools with Homebrew (AeroSpace, SketchyBar, Ghostty, JetBrainsMono Nerd Font, jq, macmon, blueutil, starship, tmux, btop, fastfetch, neofetch, tty-clock) | yes |
 | Link the configs (see below) | always |
 | Add one `source` line to `~/.zshrc` for the aliases | yes |
 | Build the small scroll helper for SketchyBar (needs `clang`) | always, if clang exists |
