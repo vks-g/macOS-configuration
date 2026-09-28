@@ -10,7 +10,7 @@
 #   --dry-run      print what would happen, change nothing
 #
 # What it touches — and nothing else:
-#   ~/.config/{aerospace,sketchybar,ghostty,btop,neofetch}, ~/.config/starship.toml,
+#   ~/.config/{aerospace,sketchybar,ghostty,btop,fastfetch,neofetch}, ~/.config/starship.toml,
 #   ~/.tmux.conf     → replaced by symlinks into this repo (old ones are MOVED to a
 #                      timestamped backup folder, never deleted)
 #   ~/.zshrc         → one `source` line appended (a copy is backed up first)
@@ -46,6 +46,7 @@ main() {
     "config/sketchybar:.config/sketchybar"
     "config/ghostty:.config/ghostty"
     "config/btop:.config/btop"
+    "config/fastfetch:.config/fastfetch"
     "config/neofetch:.config/neofetch"
     "config/starship.toml:.config/starship.toml"
     "home/.tmux.conf:.tmux.conf"
@@ -140,7 +141,7 @@ install_packages() {
   ask "Install the apps and tools these configs use (only the missing ones)?" y || return 0
 
   local casks=(nikitabobko/tap/aerospace ghostty font-jetbrains-mono-nerd-font)
-  local formulae=(felixkratz/formulae/sketchybar jq macmon blueutil starship tmux btop neofetch)
+  local formulae=(felixkratz/formulae/sketchybar jq macmon blueutil starship tmux btop fastfetch neofetch)
 
   run brew tap nikitabobko/tap >/dev/null 2>&1 || true
   run brew tap FelixKratz/formulae >/dev/null 2>&1 || true

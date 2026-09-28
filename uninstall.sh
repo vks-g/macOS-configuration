@@ -17,7 +17,7 @@ main() {
   BACKUP_ROOT="$HOME/.config-backups/macOS-configuration"
   STAMP="$(date +%Y%m%d-%H%M%S)"
   ZSH_MARKER="# macOS-configuration"
-  DESTS=(.config/aerospace .config/sketchybar .config/ghostty .config/btop .config/neofetch
+  DESTS=(.config/aerospace .config/sketchybar .config/ghostty .config/btop .config/fastfetch .config/neofetch
          .config/starship.toml .tmux.conf)
 
   [ "$DRY_RUN" = 1 ] && warn "Dry run: nothing will be changed."

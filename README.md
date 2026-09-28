@@ -14,6 +14,7 @@ A Catppuccin Mocha setup for macOS: tiling windows with **AeroSpace**, a floatin
 | [Starship](https://starship.rs) · `config/starship.toml` | Shell prompt. |
 | tmux · `home/.tmux.conf` | Catppuccin tmux with TPM, vi keys and mouse support. |
 | btop · `config/btop` | btop settings. |
+| fastfetch · `config/fastfetch` | Default fastfetch output, with the Apple logo vertically centred next to the info. |
 | neofetch · `config/neofetch` | neofetch settings. |
 | `zsh/mac-rice.zsh` | Two aliases, `aero-off` and `aero-on`, to quit and restart AeroSpace. Handy before exam or proctoring apps that don't get along with it. |
 
@@ -38,7 +39,7 @@ The installer clones this repo to `~/.local/share/macOS-configuration`. It asks 
 
 | Step | Default |
 | --- | --- |
-| Install the missing apps and tools with Homebrew (AeroSpace, SketchyBar, Ghostty, JetBrainsMono Nerd Font, jq, macmon, blueutil, starship, tmux, btop, neofetch) | yes |
+| Install the missing apps and tools with Homebrew (AeroSpace, SketchyBar, Ghostty, JetBrainsMono Nerd Font, jq, macmon, blueutil, starship, tmux, btop, fastfetch, neofetch) | yes |
 | Link the configs (see below) | always |
 | Add one `source` line to `~/.zshrc` for the aliases | yes |
 | Build the small scroll helper for SketchyBar (needs `clang`) | always, if clang exists |
@@ -55,7 +56,7 @@ Options: add them after `| bash -s --`, or pass them to `./install.sh` in a clon
 
 ### What it touches, and what it doesn't
 
-- **Replaced with symlinks into the repo:** `~/.config/{aerospace,sketchybar,ghostty,btop,neofetch}`, `~/.config/starship.toml` and `~/.tmux.conf`.
+- **Replaced with symlinks into the repo:** `~/.config/{aerospace,sketchybar,ghostty,btop,fastfetch,neofetch}`, `~/.config/starship.toml` and `~/.tmux.conf`.
 - **Your existing versions are moved, never deleted,** to `~/.config-backups/macOS-configuration/<date-time>/`. A `manifest.tsv` in that folder records what came from where.
 - **`~/.zshrc`** gets one line, marked `# macOS-configuration`. A copy of the old file is saved first.
 - **Never touched:** `~/.claude`, `~/.ssh`, your git config, and everything else. Running the installer again is safe: links that already exist are left alone.

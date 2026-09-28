@@ -1,0 +1,8 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  // Default fastfetch output; only the logo is pushed down so it sits vertically
+  // centred next to the info block (26 lines of info vs a 17-line Apple logo).
+  "logo": {
+    "padding": { "top": 4 }
+  }
+}
