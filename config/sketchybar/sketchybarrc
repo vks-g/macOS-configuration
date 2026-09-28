@@ -1,0 +1,166 @@
+#!/bin/bash
+# SketchyBar — minimal port of the Quickshell TopBar (Arch / Hyprland)
+# Left: workspaces · app · stats | Notch: clock ◖ ◗ Spotify | Right: system pill
+
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/icons.sh"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+FONT="JetBrainsMono Nerd Font"
+
+# ───────── Bar ─────────
+# Transparent bar; each group is its own floating pill (like Quickshell)
+sketchybar --bar position=top height=38 color=$TRANSPARENT \
+                 padding_left=6 padding_right=6 sticky=on topmost=off
+
+sketchybar --default \
+  icon.font="$FONT:Bold:15.0" label.font="$FONT:Bold:13.0" \
+  icon.color=$TEXT label.color=$TEXT \
+  padding_left=0 padding_right=0 \
+  icon.padding_left=6 icon.padding_right=4 \
+  label.padding_left=0 label.padding_right=6
+
+PILL=(
+  background.color=$PILL_BG
+  background.corner_radius=14
+  background.height=30
+  background.border_width=1
+  background.border_color=$PILL_BORDER
+)
+
+SPACER=(width=8 icon.drawing=off label.drawing=off background.drawing=off)
+
+# ───────── Workspaces (AeroSpace) ─────────
+sketchybar --add event aerospace_workspace_change
+
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+  sketchybar --add item ws.$sid left \
+    --set ws.$sid icon="$sid" label.drawing=off \
+      icon.font="$FONT:Bold:13.0" icon.width=20 icon.align=center \
+      icon.padding_left=0 icon.padding_right=0 \
+      padding_left=1 padding_right=1 \
+      background.corner_radius=10 background.height=24 background.drawing=off \
+      click_script="aerospace workspace $sid"
+done
+
+# Invisible item that repaints all workspace pills on AeroSpace events
+sketchybar --add item ws.updater left \
+  --set ws.updater drawing=off updates=on script="$PLUGIN_DIR/aerospace.sh" \
+  --subscribe ws.updater aerospace_workspace_change front_app_switched system_woke display_change
+
+# No shared background (just the individual pills); the bracket is kept so
+# fit_left.sh can measure where the workspaces end.
+sketchybar --add bracket workspaces ws.1 ws.2 ws.3 ws.4 ws.5 ws.6 ws.7 ws.8 ws.9 ws.10 \
+  --set workspaces background.drawing=off
+
+# ───────── Keep-awake toggle (pmset disablesleep) ─────────
+# Click to toggle. ON = never sleeps (even lid closed), OFF = normal sleep.
+# fit_left.sh stretches the pill to keep 8pt gaps.
+sketchybar --add item gap.app left --set gap.app "${SPACER[@]}" \
+  --add item awake left \
+  --set awake icon="$ICON_AWAKE" icon.color=$OVERLAY2 icon.padding_left=12 icon.padding_right=5 \
+    label="OFF" label.color=$OVERLAY2 label.padding_right=12 \
+    update_freq=30 script="$PLUGIN_DIR/awake.sh" "${PILL[@]}" \
+  --subscribe awake mouse.clicked system_woke power_source_change
+
+# ───────── Stats (after the keep-awake pill) ─────────
+# Even spacing: 12 at the pill edges, 10 between groups, 5 between icon and value.
+# Widths follow the text, so these gaps stay even whatever the numbers are.
+sketchybar --add item gap.stats left --set gap.stats "${SPACER[@]}" \
+  --add item stats.cpu left \
+  --set stats.cpu icon="$ICON_CPU" icon.padding_left=12 icon.padding_right=5 label.padding_right=5 \
+    update_freq=5 script="$PLUGIN_DIR/stats.sh" \
+  --subscribe stats.cpu system_woke \
+  --add item stats.ram left \
+  --set stats.ram icon="$ICON_RAM" icon.padding_left=5 icon.padding_right=5 label.padding_right=5 \
+  --add item stats.temp left \
+  --set stats.temp icon="$ICON_TEMP" icon.padding_left=5 icon.padding_right=5 label.padding_right=12
+
+sketchybar --add bracket stats stats.cpu stats.ram stats.temp --set stats "${PILL[@]}"
+
+# ───────── Clock (left of the notch) ─────────
+# Time and date share one 13pt size (like every other pill), so they sit on the
+# same baseline and centre vertically the same way. Mixed 14/12pt sizes never
+# lined up cleanly. Edge paddings are balanced for the glyph side-bearings.
+sketchybar --add item clock q \
+  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh" \
+    icon.font="$FONT:ExtraBold:13.0" icon.color=$BLUE icon.padding_left=12 icon.padding_right=9 \
+    label.font="$FONT:Bold:13.0" label.color=$SUBTEXT0 label.padding_right=13 \
+    "${PILL[@]}"
+
+# ───────── Scrolling names ─────────
+# SketchyBar only (re)starts a text scroll when the item gets an update — by
+# default every 15 s, hence the pauses. helpers/scroll_driver sends a tiny
+# "scroll_tick" event ~60×/s (local IPC, <1% CPU), so each name restarts the
+# instant it finishes: continuous scrolling, all started by the same tick.
+# The names live in their own script-less items so the ticks cost nothing.
+# update_freq=1 is a fallback (restart within 1 s) if the helper isn't running.
+# Speed is (visible width / scroll_duration). Spotify uses 10 × max_chars; the
+# Wi-Fi and Bluetooth names use 15 × max_chars, so they move at the same, slower
+# speed (2/3 of Spotify's).
+sketchybar --add event scroll_tick
+SCROLLER=(icon.drawing=off update_freq=1 scroll_texts=on drawing=off label.padding_right=6)
+
+# ───────── System pill (added right → left) ─────────
+sketchybar --add item control_center right \
+  --set control_center icon=󰔡 icon.color=$MAUVE label.drawing=off \
+    icon.padding_left=6 icon.padding_right=10 \
+    click_script="$PLUGIN_DIR/control_center.sh" \
+  --add item battery right \
+  --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+  --subscribe battery system_woke power_source_change \
+  --add item volume right \
+  --set volume script="$PLUGIN_DIR/volume.sh" \
+  --subscribe volume volume_change system_woke \
+  --add item bluetooth.name right \
+  --set bluetooth.name "${SCROLLER[@]}" label.max_chars=8 label.scroll_duration=120 \
+  --subscribe bluetooth.name scroll_tick \
+  --add item bluetooth right \
+  --set bluetooth update_freq=15 script="$PLUGIN_DIR/bluetooth.sh" label.drawing=off \
+  --subscribe bluetooth system_woke \
+  --add item wifi.name right \
+  --set wifi.name "${SCROLLER[@]}" label.max_chars=10 label.scroll_duration=150 \
+  --subscribe wifi.name scroll_tick \
+  --add item wifi right \
+  --set wifi update_freq=30 script="$PLUGIN_DIR/wifi.sh" label.drawing=off \
+    icon.padding_left=12 \
+  --subscribe wifi wifi_change system_woke
+
+sketchybar --add bracket system wifi wifi.name bluetooth bluetooth.name volume battery control_center \
+  --set system "${PILL[@]}"
+
+# ───────── Spotify (right of the notch, only while a track is loaded) ─────────
+sketchybar --add event spotify_change com.spotify.client.PlaybackStateChanged
+
+sketchybar --add item spotify.track e \
+  --set spotify.track drawing=off icon=󰓇 icon.color=$GREEN icon.padding_left=12 \
+    label.drawing=off script="$PLUGIN_DIR/spotify.sh" click_script="open -a Spotify" \
+  --subscribe spotify.track spotify_change system_woke \
+  --add item spotify.title e \
+  --set spotify.title "${SCROLLER[@]}" label.color=$TEXT \
+    label.max_chars=28 label.scroll_duration=280 click_script="open -a Spotify" \
+  --subscribe spotify.title scroll_tick \
+  --add item spotify.prev e \
+  --set spotify.prev drawing=off icon=󰒮 icon.color=$OVERLAY2 label.drawing=off \
+    icon.padding_left=2 icon.padding_right=2 \
+    click_script="osascript -e 'tell application \"Spotify\" to previous track'" \
+  --add item spotify.play e \
+  --set spotify.play drawing=off icon=󰐊 label.drawing=off \
+    icon.padding_left=2 icon.padding_right=2 \
+    click_script="osascript -e 'tell application \"Spotify\" to playpause'" \
+  --add item spotify.next e \
+  --set spotify.next drawing=off icon=󰒭 icon.color=$OVERLAY2 label.drawing=off \
+    icon.padding_left=2 icon.padding_right=12 \
+    click_script="osascript -e 'tell application \"Spotify\" to next track'"
+
+sketchybar --add bracket spotify spotify.track spotify.title spotify.prev spotify.play spotify.next \
+  --set spotify "${PILL[@]}"
+
+sketchybar --update
+
+# Start (or restart) the scroll ticker; it exits by itself if SketchyBar stops.
+# Built by install.sh (clang -O2 -o scroll_driver scroll_driver.c); without it the
+# names still scroll, they just pause up to 1 s between passes.
+pkill -x scroll_driver 2>/dev/null
+if [ -x "$CONFIG_DIR/helpers/scroll_driver" ]; then
+  "$CONFIG_DIR/helpers/scroll_driver" scroll_tick 16000 "$PPID" >/dev/null 2>&1 &
+fi

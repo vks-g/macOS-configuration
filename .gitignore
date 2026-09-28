@@ -1,0 +1,7 @@
+# Built on each machine by install.sh
+config/sketchybar/helpers/scroll_driver
+
+# Files apps write into their (symlinked) config folders
+config/btop/btop.log
+.DS_Store
+*.bak*

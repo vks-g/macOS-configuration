@@ -1,0 +1,3 @@
+# SketchyBar keep-awake button: lets __USER__ toggle "pmset disablesleep" without a password.
+# Only these two exact commands are allowed. Remove with: sudo rm /etc/sudoers.d/sketchybar-pmset
+__USER__ ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 0, /usr/bin/pmset -a disablesleep 1
