@@ -4,5 +4,38 @@
   // centred next to the info block (26 lines of info vs a 17-line Apple logo).
   "logo": {
     "padding": { "top": 4 }
-  }
+  },
+  // A config file without "modules" shows no info at all, so this is fastfetch's
+  // default module list (from `fastfetch --gen-config`).
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "display",
+    "de",
+    "wm",
+    "wmtheme",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "terminal",
+    "terminalfont",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    "disk",
+    "localip",
+    "battery",
+    "poweradapter",
+    "locale",
+    "break",
+    "colors"
+  ]
 }
