@@ -23,3 +23,7 @@ export RED=0xfff38ba8
 export PILL_BG=0xd91e1e2e
 export PILL_BORDER=0x0dffffff
 export TRANSPARENT=0x00000000
+
+# Workspace pills: tuned by eye to read the same as PILL_BG. Small pills with
+# bright numbers look darker than the big pills at the same colour.
+export WS_BG=0xd9262637

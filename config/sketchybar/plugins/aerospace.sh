@@ -17,9 +17,9 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
   elif [ "$sid" = "$FOCUSED" ]; then
     args+=(--set ws.$sid drawing=on background.drawing=on background.color=$MAUVE background.border_width=0 icon.color=$BASE)
   elif [[ "$OCCUPIED" == *" $sid "* ]]; then
-    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$PILL_BG background.border_width=1 background.border_color=$PILL_BORDER icon.color=$BLUE)
+    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$WS_BG background.border_width=1 background.border_color=$PILL_BORDER icon.color=$BLUE)
   else
-    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$PILL_BG background.border_width=1 background.border_color=$PILL_BORDER icon.color=$SURFACE2)
+    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$WS_BG background.border_width=1 background.border_color=$PILL_BORDER icon.color=$SURFACE2)
   fi
 done
 
