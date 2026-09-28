@@ -1,6 +1,7 @@
 #!/bin/bash
 # Repaints the workspace pills. Mirrors Quickshell states:
-# active = mauve pill, occupied = surface1 pill + blue number, empty = dim number.
+# active = mauve pill, occupied = the same dark translucent pill as the rest of the
+# bar (PILL_BG + faint border) with a blue number, empty = dim number only.
 # Shows workspaces 1-8 like the Arch bar (SEQ_END=8); 9-10 stay reachable by key
 # but aren't drawn, so the left side never runs into the clock beside the notch.
 
@@ -14,9 +15,9 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
   if [ "$sid" -gt 8 ]; then
     args+=(--set ws.$sid drawing=off)
   elif [ "$sid" = "$FOCUSED" ]; then
-    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$MAUVE icon.color=$BASE)
+    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$MAUVE background.border_width=0 icon.color=$BASE)
   elif [[ "$OCCUPIED" == *" $sid "* ]]; then
-    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$SURFACE1 icon.color=$BLUE)
+    args+=(--set ws.$sid drawing=on background.drawing=on background.color=$PILL_BG background.border_width=1 background.border_color=$PILL_BORDER icon.color=$BLUE)
   else
     args+=(--set ws.$sid drawing=on background.drawing=off icon.color=$SURFACE2)
   fi
