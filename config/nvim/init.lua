@@ -48,7 +48,7 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       options = {
-        theme = "catppuccin",
+        theme = "catppuccin-mocha",
         section_separators = { left = "\u{e0b4}", right = "\u{e0b6}" }, -- Nerd Font half circles
         component_separators = "",
         globalstatus = true,
