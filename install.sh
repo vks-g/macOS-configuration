@@ -48,6 +48,7 @@ main() {
     "config/btop:.config/btop"
     "config/fastfetch:.config/fastfetch"
     "config/neofetch:.config/neofetch"
+    "config/nvim:.config/nvim"
     "config/starship.toml:.config/starship.toml"
     "home/.tmux.conf:.tmux.conf"
   )
@@ -141,7 +142,7 @@ install_packages() {
   ask "Install the apps and tools these configs use (only the missing ones)?" y || return 0
 
   local casks=(nikitabobko/tap/aerospace ghostty font-jetbrains-mono-nerd-font)
-  local formulae=(felixkratz/formulae/sketchybar jq macmon blueutil starship tmux btop fastfetch neofetch tty-clock gping)
+  local formulae=(felixkratz/formulae/sketchybar jq macmon blueutil starship tmux btop fastfetch neofetch tty-clock gping neovim)
 
   run brew tap nikitabobko/tap >/dev/null 2>&1 || true
   run brew tap FelixKratz/formulae >/dev/null 2>&1 || true
