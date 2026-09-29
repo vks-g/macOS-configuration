@@ -141,7 +141,7 @@ install_packages() {
   ask "Install the apps and tools these configs use (only the missing ones)?" y || return 0
 
   local casks=(nikitabobko/tap/aerospace ghostty font-jetbrains-mono-nerd-font)
-  local formulae=(felixkratz/formulae/sketchybar jq macmon blueutil starship tmux btop fastfetch neofetch tty-clock)
+  local formulae=(felixkratz/formulae/sketchybar jq macmon blueutil starship tmux btop fastfetch neofetch tty-clock gping)
 
   run brew tap nikitabobko/tap >/dev/null 2>&1 || true
   run brew tap FelixKratz/formulae >/dev/null 2>&1 || true
