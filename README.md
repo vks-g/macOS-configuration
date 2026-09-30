@@ -72,13 +72,13 @@ Options: add them after `| bash -s --`, or pass them to `./install.sh` in a clon
 
 | Keys | Action |
 | --- | --- |
-| ⌥ I / Q / W / E / R / T / Y / U · ⌥ 8 / 9 · ⌥ P | Go to workspace 1–8 · 8–9 · 10 |
+| ⌥ I / Q / W / E / R / T / Y / U / O / P · ⌥ 8 | Go to workspace 1–10 · 8 |
 | ⌥ ⇧ + the same key | Move the window there and follow it |
 | ⌥ H / J / K / L | Focus left / down / up / right |
 | ⌥ ⌃ ← ↓ ↑ → | Move the window |
 | ⌥ ⇧ ← ↓ ↑ → | Resize |
 | ⌥ ↩ | New Ghostty window |
-| ⌥ F / S / D / O | Arc / Spotify / Discord / Obsidian |
+| ⌥ F / S / D | Arc / Spotify / Discord |
 | ⌥ B | Close the window |
 | ⌥ ⇧ F | Toggle floating |
 | ⌥ / · ⌥ , | Tiles (flip direction) · Accordion |
