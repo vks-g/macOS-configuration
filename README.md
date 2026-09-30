@@ -21,7 +21,7 @@ A Catppuccin Mocha setup for macOS: tiling windows with **AeroSpace**, a floatin
 
 The bar, from left to right:
 
-1. Workspace pills.
+1. Workspace pills, 8 of the 10 at a time so the group never gets wider. Going to 9 or 10 slides them to 3–10; going to 1 or 2 slides them back to 1–8.
 2. A keep-awake toggle.
 3. CPU, RAM (used/total) and CPU temperature.
 4. The clock, beside the notch.
