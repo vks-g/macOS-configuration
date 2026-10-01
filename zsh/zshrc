@@ -1,0 +1,196 @@
+# My ~/.zshrc, kept here for reference. install.sh does NOT install it; it only
+# appends a `source` line for zsh/mac-rice.zsh to your own ~/.zshrc.
+# Personal details (git accounts, emails, SSH key names) are replaced with placeholders.
+
+###############################
+#          PATHS
+###############################
+
+# Node 20
+export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+
+# MySQL
+export PATH="$PATH:/usr/local/mysql-9.4.0-macos15-arm64/bin"
+
+# Spicetify
+export PATH="$PATH:$HOME/.spicetify"
+
+# Java
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
+
+# PSQL
+export PATH="/Library/PostgreSQL/18/bin:$PATH"
+
+# MacPorts (must be last)
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+
+
+###############################
+#        LS / EZA / COLORS
+###############################
+
+alias ls="eza --icons"
+alias lt='eza --tree --icons -L 2 -lah'
+
+
+###############################
+#      DIRECTORY SHORTCUTS
+###############################
+
+alias ~="cd ~"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+
+
+###############################
+#         FZF SETTINGS
+###############################
+
+# Your custom UI added to FZF_DEFAULT_OPTS
+export FZF_DEFAULT_OPTS="
+  --border
+  --padding=1,2
+  --style=full
+  --border-label=' Demo '
+  --input-label=' Input '
+  --header-label=' File Type '
+  --preview 'fzf-preview.sh {}'
+  --bind 'result:transform-list-label:
+      if [[ -z \$FZF_QUERY ]]; then
+        echo \" \$FZF_MATCH_COUNT items \"
+      else
+        echo \" \$FZF_MATCH_COUNT matches for [\$FZF_QUERY] \"
+      fi
+      '
+  --bind 'focus:transform-preview-label:[[ -n {} ]] && printf \" Previewing [%s] \" {}'
+  --bind 'focus:+transform-header:file --brief {} || echo \"No file selected\"'
+  --bind 'ctrl-r:change-list-label( Reloading the list )+reload(sleep 2; git ls-files)'
+  --color 'border:#aaaaaa,label:#cccccc'
+  --color 'preview-border:#9999cc,preview-label:#ccccff'
+  --color 'list-border:#669966,list-label:#99cc99'
+  --color 'input-border:#996666,input-label:#ffcccc'
+  --color 'header-border:#6699cc,header-label:#99ccff'
+"
+
+# Navigation helpers
+cx() { cd "$@" && lt; }
+fcdlt() { cd "$(find . -type d -not -path '*/.*' | fzf)" && lt; }
+fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)"; }
+f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
+fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
+
+
+###############################
+#         GIT ALIASES
+###############################
+
+alias gc="git commit -m"
+alias gca="git commit -a -m"
+alias gp="git push origin"
+alias gpu="git pull origin"
+alias gst="git status"
+alias glog="git log --graph --topo-order --pretty='%w(100,0,6)%C(yellow)%h%C(bold)%C(black)%d %C(cyan)%ar %C(green)%an%n%C(bold)%C(white)%s %N' --abbrev-commit"
+alias gdiff="git diff"
+alias gco="git checkout"
+alias gb="git branch"
+alias gba="git branch -a"
+alias gadd="git add"
+alias ga="git add -p"
+alias gcoall="git checkout -- ."
+alias gr="git remote"
+alias gre="git reset"
+
+
+###############################
+#   SSH ACCOUNT SWITCHING
+###############################
+
+switch_account() {
+  ssh-add -D
+  ssh-add "$1"
+  git config user.name "$2"
+  git config user.email "$3"
+  ssh -T git@github.com
+}
+
+# One alias per GitHub account: SSH key, git user.name, git user.email
+alias g-main="switch_account ~/.ssh/id_main 'your-github-user' 'you@example.com'"
+alias g-work="switch_account ~/.ssh/id_work 'your-work-user' 'you@work.example.com'"
+
+
+###############################
+#         HISTORY SETTINGS
+###############################
+
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+setopt appendhistory sharehistory hist_ignore_space hist_ignore_dups \
+       hist_find_no_dups hist_save_no_dups hist_ignore_all_dups
+
+
+###############################
+#      COMPLETION ENGINE
+###############################
+
+autoload -Uz compinit
+compinit
+
+setopt auto_menu
+setopt complete_in_word
+
+# Case-insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+
+###############################
+#  SYNTAX HIGHLIGHTING & SUGGESTIONS
+###############################
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Needed for prompts that update dynamically
+setopt prompt_subst
+
+
+###############################
+#       FZF SETUP
+###############################
+
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+
+
+###############################
+#       STARSHIP PROMPT
+###############################
+
+eval "$(starship init zsh)"
+
+# Added by Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+
+# AeroSpace on/off (e.g. quit before exam or proctoring apps)
+# "enable off" first brings every hidden window back on screen, then quits.
+alias aero-off='aerospace enable off; killall AeroSpace'
+alias aero-on='open -a AeroSpace'
+
+# Open a file from outside the Obsidian vault through a temporary symlink that
+# removes itself when you close its tab: `obs ~/path/to/file.md` (see the script header)
+alias obs="$HOME/.local/bin/obs.zsh"
+
+[ -f "$HOME/macOS-configuration/zsh/mac-rice.zsh" ] && source "$HOME/macOS-configuration/zsh/mac-rice.zsh"  # macOS-configuration

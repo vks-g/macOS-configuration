@@ -18,6 +18,7 @@ A Catppuccin Mocha setup for macOS: tiling windows with **AeroSpace**, a floatin
 | neofetch · `config/neofetch` | neofetch settings. |
 | Neovim · `config/nvim` | Catppuccin Mocha on a transparent background, so the Ghostty blur shows through, and a pill-shaped lualine statusline. Plugins come from lazy.nvim on the first start. |
 | `zsh/mac-rice.zsh` | `aero-off` and `aero-on` quit and restart AeroSpace (handy before exam or proctoring apps that don't get along with it). `clock [size]` opens a big, centred tty-clock in its own Ghostty window. `ping-graph [host…]` draws a live latency graph of your router vs 1.1.1.1 with gping. |
+| `zsh/zshrc` | My full `~/.zshrc`, for reference: PATHs, eza, fzf and git aliases, history and completion settings, and Starship. Personal details are replaced with placeholders. `install.sh` doesn't install it. |
 
 The bar, from left to right:
 
